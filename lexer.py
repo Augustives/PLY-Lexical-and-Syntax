@@ -1,9 +1,13 @@
+from symtable import Symbol, SymbolTable
 import ply.lex as lex
 import ply.yacc as yacc
 from helpers.column_finder import find_column
 
 
 class Lexer:
+    # Symbol table
+    symbol_table = {}
+
     # Reserved words
     reserved_words =  [
         'DEF',
@@ -45,7 +49,7 @@ class Lexer:
         'IDENT',
         'INT_CONSTANT',
         'FLOAT_CONSTANT',
-        # 'STRING_CONSTANT',
+        'STRING_CONSTANT'
     ]
 
     # Definig our grammar based on our tokens with the use of regular expressions
@@ -92,6 +96,10 @@ class Lexer:
             t.type = t.value
         else:
             t.type = 'IDENT'
+            # Adding IDENT to symbol table
+            if t.value not in self.symbol_table:
+                self.symbol_table[t.value] = {'Lines': []}
+            self.symbol_table[t.value]['Lines'].append(t.lineno)
         return t
 
     # Which characters we are going to ignore
@@ -104,7 +112,6 @@ class Lexer:
 
     # Treating errors
     def t_error(self, t):
-        # TODO: Add column of the error
         column = find_column(self.code_example, t.lineno, t.value[0])
         print(f'Illegal character: "{t.value[0]}"\nLine: {t.lineno}\nColumn: {column}')
         t.lexer.skip(1)
@@ -121,8 +128,12 @@ class Lexer:
             if not token:
                 break
             token_list.append(token.type)
+        
+        print(
+            f'Token List: {token_list}\n\n',
+            f'Symbol Table: {self.symbol_table}'
+        )
 
-        print(token_list)
 
 if __name__ == '__main__':
     lexer = Lexer()
