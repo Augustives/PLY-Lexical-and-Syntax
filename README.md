@@ -1,11 +1,11 @@
 # PLY-Lexical-and-Syntax
 
-## SETUP
+## Setup
 ```bash
-  make all
+make all
 ```
 
 ## Usage
 ```bash
-  make run
+make run
 ```
