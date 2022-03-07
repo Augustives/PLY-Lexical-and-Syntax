@@ -1,7 +1,7 @@
 from symtable import Symbol, SymbolTable
 import ply.lex as lex
 import ply.yacc as yacc
-from helpers.column_finder import find_column
+from utils.column_finder import find_column
 
 
 class Lexer:
@@ -44,7 +44,7 @@ class Lexer:
         'LOWER',
         'HIGHER_EQUAL',
         'LOWER_EQUAL',
-        'DOUBLE_EQUAL',
+        'ASSIGN',
         'NOT_EQUAL',
         'IDENT',
         'INT_CONSTANT',
@@ -71,7 +71,7 @@ class Lexer:
     t_LOWER = r'<'
     t_HIGHER_EQUAL = r'>='
     t_LOWER_EQUAL = r'<='
-    t_DOUBLE_EQUAL = r'=='
+    t_ASSIGN = r'=='
     t_NOT_EQUAL = r'\!='
 
     def t_FLOAT_CONSTANT(self, t):
@@ -85,7 +85,7 @@ class Lexer:
         return t
 
     def t_STRING_CONSTANT(self, t):
-        r'''('\b.*\b')|("\b.*\b")'''
+        r"(?<=')[\w\d]*(?=')"
         t.type = 'STRING_CONSTANT'
         return t
 
@@ -114,25 +114,33 @@ class Lexer:
     def t_error(self, t):
         column = find_column(self.code_example, t.lineno, t.value[0])
         print(f'Illegal character: "{t.value[0]}"\nLine: {t.lineno}\nColumn: {column}')
-        t.lexer.skip(1)
+        # t.lexer.skip(1)
+        raise Exception
 
-    # Reading our code to pass it through the lexer and generate the token list
+
+    # Opening and reading our code to pass it through the lexer and generate the token list
     def test(self, **kwargs):
         lexer = lex.lex(module=self, **kwargs)
-        f = open('code_example.txt', 'r')
+        f = open('code_example.lcc', 'r')
         self.code_example = f.read()
         lexer.input(self.code_example)
         token_list = []
-        while True:
-            token = lexer.token()
+        result = True
+        while result:
+            try:
+                token = lexer.token()
+            except Exception:
+                result = False
+                break
             if not token:
                 break
             token_list.append(token.type)
         
-        print(
-            f'Token List: {token_list}\n\n',
-            f'Symbol Table: {self.symbol_table}'
-        )
+        if result:
+            print(
+                f'Token List: {token_list}\n\n',
+                f'Symbol Table: {self.symbol_table}'
+            )
 
 
 if __name__ == '__main__':

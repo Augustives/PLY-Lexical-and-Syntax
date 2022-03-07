@@ -1,5 +1,5 @@
 def find_column(text, line, char):
-    column = 1
+    column = 2
     num_lines = 1
     for i in text:
         if num_lines == line:

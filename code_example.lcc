@@ -7,7 +7,6 @@ def func1 ( int A , int B )
 }
 def principal ()
 {
-    int &
     'teste de string'
     int C ;
     int D ;
