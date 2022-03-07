@@ -63,7 +63,7 @@ class Lexer:
     t_CLOSE_CURLY_BRACKET = r'\}'
     t_COMMA = r','
     t_SEMICOLON = r';'
-    t_EQUAL = r'\='
+    t_ASSIGN = r'\='
     t_PLUS = r'\+'
     t_MINUS = r'\-'
     t_MULTIPLY = r'\*'
@@ -73,7 +73,7 @@ class Lexer:
     t_LOWER = r'<'
     t_HIGHER_EQUAL = r'>='
     t_LOWER_EQUAL = r'<='
-    t_ASSIGN = r'=='
+    t_EQUAL = r'=='
     t_NOT_EQUAL = r'\!='
 
     def t_FLOAT_CONSTANT(self, t):
@@ -118,7 +118,6 @@ class Lexer:
         print(f'Illegal character: "{t.value[0]}"\nLine: {t.lineno}\nColumn: {column}')
         # t.lexer.skip(1)
         raise Exception
-
 
     # Opening and reading our code to pass it through the lexer and generate the token list
     def test(self, code_path, **kwargs):
