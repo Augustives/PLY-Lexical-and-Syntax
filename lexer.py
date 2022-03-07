@@ -1,6 +1,8 @@
-from symtable import Symbol, SymbolTable
+import argparse
+
 import ply.lex as lex
 import ply.yacc as yacc
+
 from utils.column_finder import find_column
 
 
@@ -85,7 +87,7 @@ class Lexer:
         return t
 
     def t_STRING_CONSTANT(self, t):
-        r"(?<=')[\w\d]*(?=')"
+        r'\"([\w\d]|[^"])*\"'
         t.type = 'STRING_CONSTANT'
         return t
 
@@ -119,9 +121,9 @@ class Lexer:
 
 
     # Opening and reading our code to pass it through the lexer and generate the token list
-    def test(self, **kwargs):
+    def test(self, code_path, **kwargs):
         lexer = lex.lex(module=self, **kwargs)
-        f = open('code_example.lcc', 'r')
+        f = open(code_path, 'r')
         self.code_example = f.read()
         lexer.input(self.code_example)
         token_list = []
@@ -144,5 +146,10 @@ class Lexer:
 
 
 if __name__ == '__main__':
+    # parser = argparse.ArgumentParser(description='Running Lexer')
+    # parser.add_argument("--code_path", help="This is the path for the lcc archive")
+    # args = parser.parse_args()
+
     lexer = Lexer()
-    lexer.test()
+    lexer.test(code_path='./code_example.lcc')
+    # lexer.test(code_path=args.code_path)

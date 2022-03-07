@@ -12,7 +12,7 @@ $(VENV)/bin/activate: requirements.txt
 venv: $(VENV)/bin/activate
 
 run: venv
-	./$(VENV)/bin/python3 lexer.py
+	./$(VENV)/bin/python3 lexer.py --code_path $(code_path)
 
 clean:
 	rm -rf $(VENV)
