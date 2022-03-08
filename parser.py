@@ -29,34 +29,47 @@ def p_FUNLIST(p):
 
 def p_FUNCDEF(p):
     """
-    FUNCDEF: DEF IDENT ( PARAMLIST ) { STATELIST }
+    FUNCDEF: DEF IDENT OPEN_PAREN PARAMLIST CLOSE_PAREN OPEN_CURLY_BRACKET STATELIST CLOSE_CURLY_BRACKET
+    """
+
+def p_PARAMLIST(p):
+    """
+    PARAMLIST: (( int | float | string ) IDENT COMMA PARAMLIST | ( int | float | string ) IDENT)?
     """
 
 def p_STATEMENT(p):
     """
-    STATEMENT: (( int | float | string ) IDENT,
-                PARAMLIST | ( int | float | string ) IDENT)?
+    STATEMENT:
+            (VARDECL SEMICOLON |
+            ATRIBSTAT SEMICOLON |
+            PRINTSTAT SEMICOLON |
+            READSTAT SEMICOLON |
+            RETURNSTAT SEMICOLON |
+            IFSTAT |
+            FORSTAT |
+            OPEN_CURLY_BRACKET STATELIST CLOSE_CURLY_BRACKET |
+            BREAK SEMICOLON | SEMICOLON)
     """
 
 
 def p_VARDECL(p):
     """
-    VARDECL: ( int | float | string ) ident ([INT_CONSTANT])∗
+    VARDECL: ( int | float | string ) IDENT (OPEN_SQUARE_BRACKET INT_CONSTANT CLOSE_SQUARE_BRACKET)∗
     """
 
 def p_ATRIBSTAT(p):
     """
-    ATRIBSTAT: LVALUE = ( EXP RESSION | ALLOCEXP RESSION | FUNCCALL)
+    ATRIBSTAT: LVALUE ASSIGN ( EXPRESSION | ALLOCEXPRESSION | FUNCCALL)
     """
 
 def p_FUNCCALL(p):
     """
-    FUNCCALL: IDENT(PARAMLIST CALL)
+    FUNCCALL: IDENT OPEN_PAREN PARAMLISTCALL CLOSE_PAREN)
     """
 
 def p_PARAMLISTCALL(p):
     """
-    PARAMLISTCALL: (IDENT, PARAMLISTCALL | IDENT)?
+    PARAMLISTCALL: (IDENT COMMA PARAMLISTCALL | IDENT)?
     """
 
 def p_PRINTSTAT(p):
@@ -76,53 +89,52 @@ def p_RETURNSTAT(p):
 
 def p_IFSTAT(p):
     """
-    IFSTAT: if( EXPRESSION ) ST AT EMENT (else STATEMENT)?
+    IFSTAT: if OPEN_PAREN EXPRESSION CLOSE_PAREN STATEMENT (ELSE STATEMENT)?
     """
 
 def p_FORSTAT(p):
     """
-    FORSTAT: for(ATRIBSTAT; EXPRESSION; ATRIBSTAT) STATEMENT
+    FORSTAT: FOR OPEN_PAREN ATRIBSTAT; EXPRESSION; ATRIBSTAT CLOSE_PAREN STATEMENT
     """
 
 def p_STATELIST(p):
     """
     STATELIST: STATEMENT (STATELIST)?
-
     """
 
 def p_ALLOCEXPRESSION(p):
     """
-    ALLOCEXPRESSION:  new (int | float | string) ([ NUMEXPRESSION ])+
+    ALLOCEXPRESSION:  new (int | float | string) (OPEN_SQUARE_BRACKET NUMEXPRESSION CLOSE_SQUARE_BRACKET)+
     """
 
 def p_EXPRESSION(p):
     """
-    p_EXPRESSION: NUMEXPRESSION(( < | > | <= | >= | == | ! =) NUMEXPRESSION)?
+    p_EXPRESSION: NUMEXPRESSION(( LOWER | HIGHER | LOWER_EQUAL | HIGHER_EQUAL | EQUAL | NOT_EQUAL) NUMEXPRESSION)?
     """
 
 def p_NUMEXPRESSION(p):
     """
-    NUMEXPRESSION:TERM ((+ |−) TERM)∗
+    NUMEXPRESSION:TERM ((PLUS | MINUS) TERM)∗
     """
 
 def p_TERM(p):
     """
-    TERM: UNARYEXPR(( ∗ | / | %) UNARYEXPR)∗
+    TERM: UNARYEXPR(( MULTIPLY | DIVIDE | MODULUS) UNARYEXPR)∗
     """
 
 def p_UNARYEXPR(p):
     """
-    UNARYEXPR: ((+ |−))? FACTOR
+    UNARYEXPR: ((PLUS | MINUS))? FACTOR
     """
 
 def p_FACTOR(p):
     """
-    FACTOR:  (int constant | float constant | string constant | null | | LV ALUE | (NUMEXPRESSION))
+    FACTOR:  (INT_CONSTANT | FLOAT_CONSTANT | STRING_CONSTANT | NULL | | LVALUE | OPEN_PAREN NUMEXPRESSION CLOSE_PAREN )
     """
 
 def p_LVALUE(p):
     """
-    p_LVALUE:
+    p_LVALUE: IDENT( OPEN_SQUARE_BRACKET NUMEXPRESSION CLOSE_SQUARE_BRACKET )∗
     """
 
 def p_error(p):
