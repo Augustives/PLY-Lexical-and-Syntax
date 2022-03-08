@@ -7,27 +7,32 @@ from utils.column_finder import find_column
 
 
 class Lexer:
+    def __init__(self):
+        self.code_example = None
+
+    literals = ['+', '-', '*', '/']
+
     # Symbol table
     symbol_table = {}
 
     # Reserved words
-    reserved_words =  [
-        'DEF',
-        'BREAK',
-        'PRINT',
-        'READ',
-        'RETURN',
-        'IF',
-        'ELSE',
-        'FOR',
-        'NULL',
-        'INT',
-        'FLOAT',
-        'STRING'
+    reserved_words = [
+        'def',
+        'break',
+        'print',
+        'read',
+        'return',
+        'if',
+        'else',
+        'for',
+        'null',
+        'int',
+        'float',
+        'string'
     ]
 
     # Definig the name of the tokens we are going to use
-    tokens = reserved_words+[
+    tokens = reserved_words + [
         'OPEN_PAREN',
         'CLOSE_PAREN',
         'OPEN_SQUARE_BRACKET',
@@ -92,7 +97,7 @@ class Lexer:
         return t
 
     def t_IDENT(self, t):
-        r'[a-zA-Z_][a-zA-Z_0-9]*'
+        r"""[a-zA-Z_][a-zA-Z_0-9]*"""
         if t.value.upper() in self.reserved_words:
             t.value = t.value.upper()
             t.type = t.value
@@ -109,8 +114,8 @@ class Lexer:
 
     # Treating number of lines
     def t_newline(self, t):
-            r'\n+'
-            t.lexer.lineno += len(t.value)
+        r'\n+'
+        t.lexer.lineno += len(t.value)
 
     # Treating errors
     def t_error(self, t):
@@ -136,13 +141,12 @@ class Lexer:
             if not token:
                 break
             token_list.append(token.type)
-        
+
         if result:
             print(
                 f'Token List: {token_list}\n\n',
                 f'Symbol Table: {self.symbol_table}'
             )
-
 
 if __name__ == '__main__':
     # parser = argparse.ArgumentParser(description='Running Lexer')
