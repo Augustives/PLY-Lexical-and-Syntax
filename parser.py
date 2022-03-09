@@ -38,7 +38,7 @@ def p_STATEMENT(p):
    pass
 
 def p_VARDECL(p):
-    """VARDECL : '(' int '|' float '|' string ')' IDENT '(' OPEN_SQUARE_BRACKET INT_CONSTANT CLOSE_SQUARE_BRACKET ')' '∗' """
+    """VARDECL : '(' int '|' float '|' string ')' IDENT '(' OPEN_SQUARE_BRACKET INT_CONSTANT CLOSE_SQUARE_BRACKET ')' '*' """
     pass
 
 def p_ATRIBSTAT(p):
@@ -87,11 +87,11 @@ def p_EXPRESSION(p):
     pass
 
 def p_NUMEXPRESSION(p):
-    """ NUMEXPRESSION : TERM '(' '(' PLUS '|' MINUS ')' TERM ')' '∗' """
+    """ NUMEXPRESSION : TERM '(' '(' PLUS '|' MINUS ')' TERM ')' '*' """
     pass
 
 def p_TERM(p):
-    """TERM : UNARYEXPR '(' '('  MULTIPLY '|' DIVIDE '|' MODULUS ')' UNARYEXPR ')' '∗' """
+    """TERM : UNARYEXPR '(' '('  MULTIPLY '|' DIVIDE '|' MODULUS ')' UNARYEXPR ')' '*' """
     pass
 
 def p_UNARYEXPR(p):
@@ -103,7 +103,7 @@ def p_FACTOR(p):
     pass
 
 def p_LVALUE(p):
-    """LVALUE : IDENT '(' OPEN_SQUARE_BRACKET NUMEXPRESSION CLOSE_SQUARE_BRACKET ')' '∗'"""
+    """LVALUE : IDENT '(' OPEN_SQUARE_BRACKET NUMEXPRESSION CLOSE_SQUARE_BRACKET ')' '*' """
     pass
 
 def p_error(p):
