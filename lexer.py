@@ -10,8 +10,6 @@ class Lexer:
     def __init__(self):
         self.code_example = None
 
-    literals = ['+', '-', '*', '/']
-
     # Symbol table
     symbol_table = {}
 
@@ -28,7 +26,8 @@ class Lexer:
         'null',
         'int',
         'float',
-        'string'
+        'string',
+        'new'
     ]
 
     # Definig the name of the tokens we are going to use

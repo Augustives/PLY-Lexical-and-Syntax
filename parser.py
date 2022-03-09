@@ -7,7 +7,6 @@ from utils.column_finder import find_column
 lexer = Lexer()
 tokens = lexer.tokens
 
-
 # Aqui tem que ser definido a ordem dos operadores
 # precedence = (
 #     ('nonassoc', 'LESSTHAN', 'GREATERTHAN'),  # Nonassociative operators
@@ -25,9 +24,9 @@ def p_PROGRAM(p):
 def p_FUNLIST(p):
     """FUNCLIST : FUNCDEF FUNCLIST '|' FUNCDEF"""
     pass
-#
+
 def p_FUNCDEF(p):
-    'FUNCDEF : def IDENT OPEN_PAREN PARAMLIST CLOSE_PAREN OPEN_CURLY_BRACKET STATELIST CLOSE_CURLY_BRACKET'
+    """FUNCDEF : def IDENT OPEN_PAREN PARAMLIST CLOSE_PAREN OPEN_CURLY_BRACKET STATELIST CLOSE_CURLY_BRACKET"""
     pass
 
 def p_PARAMLIST(p):
@@ -55,7 +54,7 @@ def p_PARAMLISTCALL(p):
     pass
 
 def p_PRINTSTAT(p):
-    'PRINTSTAT : print EXPRESSION'
+    """PRINTSTAT : print EXPRESSION"""
     pass
 
 def p_READSTAT(p):
@@ -74,6 +73,7 @@ def p_FORSTAT(p):
     """FORSTAT : for OPEN_PAREN ATRIBSTAT SEMICOLON EXPRESSION SEMICOLON ATRIBSTAT CLOSE_PAREN STATEMENT"""
     pass
 
+
 def p_STATELIST(p):
     "STATELIST : STATEMENT '(' STATELIST ')' '?'"
     pass
@@ -89,7 +89,7 @@ def p_EXPRESSION(p):
 def p_NUMEXPRESSION(p):
     """ NUMEXPRESSION : TERM '(' '(' PLUS '|' MINUS ')' TERM ')' '∗' """
     pass
-#
+
 def p_TERM(p):
     """TERM : UNARYEXPR '(' '('  MULTIPLY '|' DIVIDE '|' MODULUS ')' UNARYEXPR ')' '∗' """
     pass
