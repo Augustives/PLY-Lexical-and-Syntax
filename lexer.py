@@ -9,25 +9,24 @@ from utils.column_finder import find_column
 class Lexer:
     def __init__(self):
         self.code_example = None
-
-    # Symbol table
-    symbol_table = {}
+        # Symbol table
+        self.symbol_table = {}
 
     # Reserved words
     reserved_words = [
-        'def',
-        'break',
-        'print',
-        'read',
-        'return',
-        'if',
-        'else',
-        'for',
-        'null',
-        'int',
-        'float',
-        'string',
-        'new'
+        'DEF',
+        'BREAK',
+        'PRINT',
+        'READ',
+        'RETURN',
+        'IF',
+        'ELSE',
+        'FOR',
+        'NULL',
+        'INT',
+        'FLOAT',
+        'STRING',
+        'NEW'
     ]
 
     # Definig the name of the tokens we are going to use
@@ -82,21 +81,22 @@ class Lexer:
 
     def t_FLOAT_CONSTANT(self, t):
         r'\d+\.\d+'
-        t.value = float(t.value)
+        t.value = str(t.value)
         return t
 
     def t_INT_CONSTANT(self, t):
         r'\d+'
-        t.value = int(t.value)
+        t.value = str(t.value)
         return t
 
     def t_STRING_CONSTANT(self, t):
-        r'\"([\w\d]|[^"])*\"'
+        r'"([\w\d]|[^"])*"'
         t.type = 'STRING_CONSTANT'
         return t
 
+    # Here we check for the Resered Words and also the IDENT
     def t_IDENT(self, t):
-        r"""[a-zA-Z_][a-zA-Z_0-9]*"""
+        r'[a-zA-Z_][a-zA-Z_0-9]*'
         if t.value.upper() in self.reserved_words:
             t.value = t.value.upper()
             t.type = t.value
@@ -126,9 +126,14 @@ class Lexer:
     # Opening and reading our code to pass it through the lexer and generate the token list
     def test(self, code_path, **kwargs):
         lexer = lex.lex(module=self, **kwargs)
+
+        # Reading code file and passing as input to lexer
         f = open(code_path, 'r')
         self.code_example = f.read()
         lexer.input(self.code_example)
+        f.close()
+
+        # Tokenizing the code
         token_list = []
         result = True
         while result:
@@ -146,6 +151,7 @@ class Lexer:
                 f'Token List: {token_list}\n\n',
                 f'Symbol Table: {self.symbol_table}'
             )
+
 
 if __name__ == '__main__':
     # parser = argparse.ArgumentParser(description='Running Lexer')
