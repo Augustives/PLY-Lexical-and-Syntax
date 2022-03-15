@@ -37,6 +37,7 @@ class Lexer:
         'CLOSE_SQUARE_BRACKET',
         'OPEN_CURLY_BRACKET',
         'CLOSE_CURLY_BRACKET',
+        'DOT',
         'COMMA',
         'SEMICOLON',
         'EQUAL',
@@ -64,6 +65,7 @@ class Lexer:
     t_CLOSE_SQUARE_BRACKET = r'\]'
     t_OPEN_CURLY_BRACKET = r'\{'
     t_CLOSE_CURLY_BRACKET = r'\}'
+    t_DOT = r'\.'
     t_COMMA = r','
     t_SEMICOLON = r';'
     t_ASSIGN = r'\='
@@ -114,7 +116,7 @@ class Lexer:
     # Treating number of lines
     def t_newline(self, t):
         r'\n+'
-        t.lexer.lineno += len(t.value)
+        t.lexer.lineno += 1
 
     # Treating errors
     def t_error(self, t):

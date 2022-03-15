@@ -11,10 +11,15 @@ class Parser():
     tokens = lexer.tokens
     lexer = lex.lex(module=lexer)
 
-    # Aqui tem que ser definido a ordem dos operadores
-    # precedence = (
-    #     
-    # )
+    # Defining the precedence
+    precedence = (
+        ('right', 'IDENT', 'IF'),
+        ('right', 'ASSIGN'),
+        ('left', 'LOWER', 'LOWER_EQUAL', 'HIGHER', 'HIGHER_EQUAL'),
+        ('left', 'PLUS', 'MINUS'),
+        ('left', 'MULTIPLY', 'DIVIDE'),
+        ('left', 'OPEN_PAREN', 'CLOSE_PAREN')
+    )
 
     # Defining the grammar
     def p_PROGRAM(self, p):
@@ -172,16 +177,12 @@ class Parser():
         p[0] = p[1] + p[2] + p[3]
 
     def p_ALLOCEXPRESSION1(self, p):
-        '''ALLOCEXPRESSION1 : OPEN_SQUARE_BRACKET NUMEXPRESSION CLOSE_SQUARE_BRACKET ALLOCEXPRESSION2'''
+        '''ALLOCEXPRESSION1 : OPEN_SQUARE_BRACKET NUMEXPRESSION CLOSE_SQUARE_BRACKET ALLOCEXPRESSION1
+                            | OPEN_SQUARE_BRACKET NUMEXPRESSION CLOSE_SQUARE_BRACKET'''
         if p[4] is None:
             p[0] = p[1] + p[2] + p[3]
         else:
             p[0] = p[1] + p[2] + p[3] + p[4]
-    
-    def p_ALLOCEXPRESSION2(self, p):
-        '''ALLOCEXPRESSION2 : ALLOCEXPRESSION1
-                            | EMPTY'''
-        p[0] = p[1]
 
     def p_EXPRESSION(self, p):
         '''EXPRESSION : NUMEXPRESSION EXPRESSION1'''
@@ -191,17 +192,17 @@ class Parser():
             p[0] = p[1] + p[2]
 
     def p_EXPRESSION1(self, p):
-        '''EXPRESSION1 : COMPAREOPERANDS
+        '''EXPRESSION1 : COMPAREOPERANDS NUMEXPRESSION
                        | EMPTY'''
         p[0] = p[1]
     
     def p_COMPAREOPERANDS(self, p):
         '''COMPAREOPERANDS : LOWER 
-                       | HIGHER 
-                       | LOWER_EQUAL 
-                       | HIGHER_EQUAL 
-                       | EQUAL 
-                       | NOT_EQUAL'''
+                           | HIGHER 
+                           | LOWER_EQUAL 
+                           | HIGHER_EQUAL 
+                           | EQUAL 
+                           | NOT_EQUAL'''
         p[0] = p[1]
 
     def p_NUMEXPRESSION(self, p):
@@ -235,7 +236,10 @@ class Parser():
         '''TERM1 : MATHOPERANDS UNARYEXPR TERM1
                  | EMPTY'''
         if len(p) == 4:
-            p[0] = p[1] + p[2] + p[3]
+            if p[3] is None:
+                p[0] = p[1] + p[2]
+            else:
+                p[0] = p[1] + p[2] + p[3]
         else:
             p[0] = p[1]
 
@@ -294,15 +298,14 @@ class Parser():
 
     def p_error(self, p):
         print(f"Syntax error at token {p.type} at line {p.lineno}" )
-        
 
     def test(self, code_path, **kwargs):
-        parser = yacc.yacc(module=self, debug=True, check_recursion=False, **kwargs)
+        parser = yacc.yacc(module=self, **kwargs)
 
         # Reading code file and passing as input to lexer
         f = open(code_path, 'r')
         self.code_example = f.read()
-        result = parser.parse(input=self.code_example, lexer=self.lexer)
+        parser.parse(input=self.code_example, lexer=self.lexer)
         f.close()
     
 if __name__ == '__main__':
