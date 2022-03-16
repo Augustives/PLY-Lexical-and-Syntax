@@ -37,7 +37,7 @@ class Lexer:
         'CLOSE_SQUARE_BRACKET',
         'OPEN_CURLY_BRACKET',
         'CLOSE_CURLY_BRACKET',
-        'DOT',
+        # 'DOT',
         'COMMA',
         'SEMICOLON',
         'EQUAL',
@@ -65,7 +65,7 @@ class Lexer:
     t_CLOSE_SQUARE_BRACKET = r'\]'
     t_OPEN_CURLY_BRACKET = r'\{'
     t_CLOSE_CURLY_BRACKET = r'\}'
-    t_DOT = r'\.'
+    # t_DOT = r'\.'
     t_COMMA = r','
     t_SEMICOLON = r';'
     t_ASSIGN = r'\='

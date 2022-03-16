@@ -13,8 +13,8 @@ class Parser():
 
     # Defining the precedence
     precedence = (
-        ('right', 'IDENT', 'IF'),
-        ('right', 'ASSIGN'),
+        # ('right', 'IDENT', 'IF'), 
+        # ('right', 'ASSIGN'),
         ('left', 'LOWER', 'LOWER_EQUAL', 'HIGHER', 'HIGHER_EQUAL'),
         ('left', 'PLUS', 'MINUS'),
         ('left', 'MULTIPLY', 'DIVIDE'),
@@ -26,46 +26,35 @@ class Parser():
         '''PROGRAM : STATEMENT 
                    | FUNCLIST
                    | EMPTY'''
-        p[0] = p[1]
+        pass
 
-    def p_FUNLIST(self, p):
-        '''FUNCLIST : FUNCDEF FUNCLIST 
-                    | FUNCDEF'''
-        if len(p) == 3:
-            p[0] = p[1] + p[2]
-        else:
-            p[0] = p[1]
+    def p_FUNCLIST(self, p):
+        '''FUNCLIST : FUNCDEF FUNCLIST1'''
+        pass
+
+    def p_FUNCLIST1(self, p):
+        '''FUNCLIST1 : FUNCLIST 
+                     | EMPTY'''
+        pass
 
     def p_FUNCDEF(self, p):
         '''FUNCDEF : DEF IDENT OPEN_PAREN PARAMLIST CLOSE_PAREN OPEN_CURLY_BRACKET STATELIST CLOSE_CURLY_BRACKET'''
-        if p[4] is None:
-            p[4] = ""
-        p[0] = p[1] + p[2] + p[3] + p[4] + p[5] + p[6] + p[7] + p[8]
+        pass
 
-    def p_INTFLOATSTRING(self, p):
-        '''INTFLOATSTRING : INT
-                          | FLOAT
-                          | STRING'''
-        p[0] = p[1]
+    def p_INT_FLOAT_STRING(self, p):
+        '''INT_FLOAT_STRING : INT
+                            | FLOAT
+                            | STRING'''
+        pass
 
     def p_PARAMLIST(self, p):
-        '''PARAMLIST : INTFLOATSTRING IDENT COMMA PARAMLIST
-                     | PARAMLIST1'''
-        if len(p) == 5:
-            if p[4] is None:
-                p[0] = p[1] + p[2] + p[3]
-            else:
-                p[0] = p[1] + p[2] + p[3] + p[4]
-        else:
-            p[0] = p[1]
+        '''PARAMLIST : INT_FLOAT_STRING IDENT PARAMLIST1'''
+        pass
 
     def p_PARAMLIST1(self, p):
-        '''PARAMLIST1 : INTFLOATSTRING IDENT
+        '''PARAMLIST1 : COMMA PARAMLIST
                       | EMPTY'''
-        if len(p) == 3:
-            p[0] = p[1] + p[2]
-        else:
-            p[0] = p[1]
+        pass
 
     def p_STATEMENT(self, p):
         '''STATEMENT : VARDECL SEMICOLON 
@@ -77,124 +66,103 @@ class Parser():
                      | OPEN_CURLY_BRACKET STATELIST CLOSE_CURLY_BRACKET 
                      | BREAK SEMICOLON 
                      | SEMICOLON'''
-        if len(p) == 4:
-            p[0] = p[1] + p[2] + p[3]
-        elif len(p) == 3:
-            p[0] = p[1] + p[2]
-        else:
-            p[0] = p[1]
+        pass
 
     def p_VARDECL(self, p):
-        '''VARDECL : INTFLOATSTRING IDENT VARDECL1'''
-        if p[3] is None:
-            p[0] = p[1] + p[2]
-        else:
-            p[0] = p[1] + p[2] + p[3]
+        '''VARDECL : INT_FLOAT_STRING IDENT VARDECL1'''
+        pass
 
     def p_VARDECL1(self, p):
         '''VARDECL1 : OPEN_SQUARE_BRACKET INT_CONSTANT CLOSE_SQUARE_BRACKET VARDECL1
                     | EMPTY'''
-        if len(p) == 5:
-            if p[4] is None:
-                p[0] = p[1] + p[2] + p[3]
-            else:
-                p[0] = p[1] + p[2] + p[3] + p[4]
-        else:
-            p[0] = p[1]
+        pass
 
     def p_ATRIBSTAT(self, p):
         '''ATRIBSTAT : LVALUE ASSIGN ATRIBSTAT1'''
-        p[0] = p[1] + p[2] + p[3]
+        pass
         
     def p_ATRIBSTAT1(self, p):
-        ''' ATRIBSTAT1 : EXPRESSION 
-                       | ALLOCEXPRESSION 
-                       | FUNCCALL'''
-        p[0] = p[1]
+        ''' ATRIBSTAT1 : EXPRESSION_FUNCCALL 
+                       | ALLOCEXPRESSION'''
+        pass
 
-    def p_FUNCCALL(self, p):
-        '''FUNCCALL : IDENT OPEN_PAREN PARAMLISTCALL CLOSE_PAREN'''
-        p[0] = p[1] + p[2] + p[3] + p[4]
+    def p_EXPRESSION_FUNCCALL(self, p):
+        '''EXPRESSION_FUNCCALL : PLUS FACTOR TERM1 NUMEXPRESSION1 EXPRESSION1
+                               | MINUS FACTOR TERM1 NUMEXPRESSION1 EXPRESSION1
+                               | INT_CONSTANT TERM1 NUMEXPRESSION1 EXPRESSION1
+                               | FLOAT_CONSTANT TERM1 NUMEXPRESSION1 EXPRESSION1
+                               | STRING_CONSTANT TERM1 NUMEXPRESSION1 EXPRESSION1
+                               | NULL TERM1 NUMEXPRESSION1 EXPRESSION1
+                               | OPEN_PAREN NUMEXPRESSION CLOSE_PAREN TERM1 NUMEXPRESSION1 EXPRESSION1
+                               | IDENT EXPRESSION_FUNCCALL1'''
+        pass
+
+    def p_EXPRESSION_FUNCCALL1(self, p):
+        '''EXPRESSION_FUNCCALL1 : ALLOCEXPRESSION1 TERM1 NUMEXPRESSION1 EXPRESSION1
+                                | OPEN_PAREN PARAMLISTCALL CLOSE_PAREN'''
+        pass
 
     def p_PARAMLISTCALL(self, p):
-        '''PARAMLISTCALL : PARAMLISTCALL1
+        '''PARAMLISTCALL : IDENT PARAMLISTCALL1
                          | EMPTY'''
-        p[0] = p[1]
+        pass
 
     def p_PARAMLISTCALL1(self, p):
-        '''PARAMLISTCALL1 : IDENT COMMA PARAMLISTCALL 
-                          | IDENT'''
-        if len(p) == 4:
-            p[0] = p[1] + p[2] + p[3]
-        else:
-            p[0] = p[1]
+        '''PARAMLISTCALL1 : COMMA PARAMLISTCALL 
+                          | EMPTY'''
+        pass
 
     def p_PRINTSTAT(self, p):
         '''PRINTSTAT : PRINT EXPRESSION'''
-        p[0] = p[1] + p[2]
+        pass
 
     def p_READSTAT(self, p):
         '''READSTAT : READ LVALUE'''
-        p[0] = p[1] + p[2]
+        pass
 
     def p_RETURNSTAT(self, p):
         '''RETURNSTAT : RETURN'''
-        p[0] = p[1]
+        pass
 
     def p_IFSTAT(self, p):
         '''IFSTAT : IF OPEN_PAREN EXPRESSION CLOSE_PAREN STATEMENT IFSTAT1'''
-        if p[6] is None:
-            p[0] = p[1] + p[2] + p[3] + p[4] + p[5]
-        else:
-            p[0] = p[1] + p[2] + p[3] + p[4] + p[5] + p[6]
+        pass
 
     def p_IFSTAT1(self, p):
         '''IFSTAT1 : ELSE STATEMENT
                    | EMPTY'''
-        if len(p) == 3:
-            p[0] = p[1] + p[2]
-        else:
-            p[0] = p[1]
+        pass
 
     def p_FORSTAT(self, p):
         '''FORSTAT : FOR OPEN_PAREN ATRIBSTAT SEMICOLON EXPRESSION SEMICOLON ATRIBSTAT CLOSE_PAREN STATEMENT'''
-        p[0] = p[1] + p[2] + p[3] + p[4] + p[5] + p[6] + p[7] + p[8] + p[9]
+        pass
 
     def p_STATELIST(self, p):
         '''STATELIST : STATEMENT STATELIST1'''
-        if p[2] is None:
-            p[0] = p[1]
-        else:
-            p[0] = p[1] + p[2]
+        pass
 
     def p_STATELIST1(self, p):
         '''STATELIST1 : STATELIST
                       | EMPTY'''
-        p[0] = p[1]
+        pass
 
     def p_ALLOCEXPRESSION(self, p):
-        '''ALLOCEXPRESSION :  NEW INTFLOATSTRING ALLOCEXPRESSION1'''
-        p[0] = p[1] + p[2] + p[3]
+        '''ALLOCEXPRESSION :  NEW INT_FLOAT_STRING OPEN_SQUARE_BRACKET NUMEXPRESSION CLOSE_SQUARE_BRACKET ALLOCEXPRESSION1'''
+        pass
 
     def p_ALLOCEXPRESSION1(self, p):
         '''ALLOCEXPRESSION1 : OPEN_SQUARE_BRACKET NUMEXPRESSION CLOSE_SQUARE_BRACKET ALLOCEXPRESSION1
-                            | OPEN_SQUARE_BRACKET NUMEXPRESSION CLOSE_SQUARE_BRACKET'''
-        if p[4] is None:
-            p[0] = p[1] + p[2] + p[3]
-        else:
-            p[0] = p[1] + p[2] + p[3] + p[4]
+                            | EMPTY'''
+        pass
 
     def p_EXPRESSION(self, p):
         '''EXPRESSION : NUMEXPRESSION EXPRESSION1'''
-        if p[2] is None:
-            p[0] = p[1]
-        else:
-            p[0] = p[1] + p[2]
+        pass
 
     def p_EXPRESSION1(self, p):
         '''EXPRESSION1 : COMPAREOPERANDS NUMEXPRESSION
                        | EMPTY'''
-        p[0] = p[1]
+        pass
     
     def p_COMPAREOPERANDS(self, p):
         '''COMPAREOPERANDS : LOWER 
@@ -203,64 +171,41 @@ class Parser():
                            | HIGHER_EQUAL 
                            | EQUAL 
                            | NOT_EQUAL'''
-        p[0] = p[1]
+        pass
 
     def p_NUMEXPRESSION(self, p):
-        ''' NUMEXPRESSION : TERM NUMEXPRESSION1'''
-        if p[2] is None:
-            p[0] = p[1]
-        else:
-            p[0] = p[1] + p[2]
+        '''NUMEXPRESSION : TERM NUMEXPRESSION1'''
+        pass
         
     def p_NUMEXPRESSION1(self, p):
-        ''' NUMEXPRESSION1 : NUMEXPRESSION2 TERM NUMEXPRESSION1
-                           | EMPTY'''
-        if len(p) == 3:
-            p[0] = p[1] + p[2]
-        else:
-            p[0] = p[1]
+        '''NUMEXPRESSION1 : NUMEXPRESSION2 TERM NUMEXPRESSION1
+                          | EMPTY'''
+        pass
     
     def p_NUMEXPRESSION2(self, p):
-        ''' NUMEXPRESSION2 : PLUS 
-                           | MINUS'''
-        p[0] = p[1]
+        '''NUMEXPRESSION2 : PLUS 
+                          | MINUS'''
+        pass
 
     def p_TERM(self, p):
         '''TERM : UNARYEXPR TERM1'''
-        if p[2] is None:
-             p[0] = p[1]
-        else:
-            p[0] = p[1] + p[2]
+        pass
 
     def p_TERM1(self, p):
-        '''TERM1 : MATHOPERANDS UNARYEXPR TERM1
+        '''TERM1 : MULT_DIV_MOD TERM
                  | EMPTY'''
-        if len(p) == 4:
-            if p[3] is None:
-                p[0] = p[1] + p[2]
-            else:
-                p[0] = p[1] + p[2] + p[3]
-        else:
-            p[0] = p[1]
+        pass
 
-    def p_MATHOPERANDS(self, p):
-        '''MATHOPERANDS : MULTIPLY 
+    def p_MULT_DIV_MOD(self, p):
+        '''MULT_DIV_MOD : MULTIPLY 
                         | DIVIDE 
                         | MODULUS'''
-        p[0] = p[1]
+        pass
 
     def p_UNARYEXPR(self, p):
-        '''UNARYEXPR : UNARYEXPR1 FACTOR'''
-        if p[1] is None:
-            p[0] = p[2]
-        else:
-            p[0] = p[1] + p[2]
-
-    def p_UNARYEXPR1(self, p):
-        '''UNARYEXPR1 : PLUS 
-                      | MINUS
-                      | EMPTY'''
-        p[0] = p[1]
+        '''UNARYEXPR : NUMEXPRESSION2 FACTOR
+                     | FACTOR'''
+        pass
 
     def p_FACTOR(self, p):
         '''FACTOR : INT_CONSTANT 
@@ -269,38 +214,21 @@ class Parser():
                   | NULL  
                   | LVALUE 
                   | OPEN_PAREN NUMEXPRESSION CLOSE_PAREN'''
-        if len(p) == 4:
-            p[0] = p[1] + p[2] + p[3]
-        else:
-            p[0] = p[1]
+        pass
 
     def p_LVALUE(self, p):
-        '''LVALUE : IDENT LVALUE1'''
-        if p[2] is None:
-            p[0] = p[1]
-        else:
-            p[0] = p[1] + p[2]
-
-    def p_LVALUE1(self, p):
-        '''LVALUE1 : OPEN_SQUARE_BRACKET NUMEXPRESSION CLOSE_SQUARE_BRACKET LVALUE1
-                   | EMPTY'''
-        if len(p) == 5:
-            if p[4] is None:
-                p[0] = p[1] + p[2] + p[3]
-            else:
-                p[0] = p[1] + p[2] + p[3] + p[4]
-        else:
-            p[0] = p[1]
+        '''LVALUE : IDENT ALLOCEXPRESSION1'''
+        pass
 
     def p_EMPTY(self, p):
         '''EMPTY :'''
-        p[0] = None
+        pass
 
     def p_error(self, p):
         print(f"Syntax error at token {p.type} at line {p.lineno}" )
 
     def test(self, code_path, **kwargs):
-        parser = yacc.yacc(module=self, **kwargs)
+        parser = yacc.yacc(module=self, **kwargs, debug=True)
 
         # Reading code file and passing as input to lexer
         f = open(code_path, 'r')
