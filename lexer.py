@@ -76,7 +76,7 @@ class Lexer:
     t_LOWER = r'<'
     t_HIGHER_EQUAL = r'>='
     t_LOWER_EQUAL = r'<='
-    t_EQUAL = r'=='
+    t_EQUAL = r'\=\='
     t_NOT_EQUAL = r'\!='
 
     def t_FLOAT_CONSTANT(self, t):
@@ -154,10 +154,10 @@ class Lexer:
 
 
 if __name__ == '__main__':
-    # arg_parser = argparse.ArgumentParser(description='Running Lexer')
-    # arg_parser.add_argument("--code_path", help="This is the path for the lcc archive")
-    # args = arg_parser.parse_args()
+    arg_parser = argparse.ArgumentParser(description='Running Lexer')
+    arg_parser.add_argument("--code_path", help="This is the path for the lcc archive")
+    args = arg_parser.parse_args()
 
     lexer = Lexer()
-    lexer.test(code_path='./code_example.lcc')
-    # lexer.test(code_path=args.code_path)
+    # lexer.test(code_path='./code_example.lcc')
+    lexer.test(code_path=args.code_path)

@@ -1,21 +1,14 @@
-# define the name of the virtual environment directory
-VENV := venv
+PYTHON:=
+	ifeq ($(OS),Windows_NT)
+		PYTHON = python
+	else
+		PYTHON = python3
+	endif
 
-# default target, when make executed without arguments
-all: venv
+# make lexer code_path=./code_example.lcc
+lexer:
+	$(PYTHON) lexer.py --code_path $(code_path)
 
-$(VENV)/bin/activate: requirements.txt
-	python3 -m venv $(VENV)
-	./$(VENV)/bin/pip install -r requirements.txt
-
-# venv is a shortcut target
-venv: $(VENV)/bin/activate
-
-run: venv
-	./$(VENV)/bin/python3 lexer.py --code_path $(code_path)
-
-clean:
-	rm -rf $(VENV)
-	find . -type f -name '*.pyc' -delete
-
-.PHONY: all venv run clean
+# make parser code_path=./code_example.lcc
+parser:
+	$(PYTHON) parser.py --code_path $(code_path)

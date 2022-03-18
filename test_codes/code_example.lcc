@@ -1,13 +1,14 @@
 def func1 ( int A , int B )
 {
-    int SM [2];
+    int SM [2] ;
     SM [0] = A + B ;
     SM [1] = B * C ;
+    SM [2] = 1.6 ;
     return ;
 }
-def principal ()
+def principal ( )
 {
-    int C ;
+    int A ;
     int D ;
     int R ;
     C = 4;

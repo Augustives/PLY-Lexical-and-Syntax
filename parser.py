@@ -1,5 +1,6 @@
+import argparse
 import os
-from tkinter import E
+
 import ply.lex as lex
 import ply.yacc as yacc
 
@@ -15,13 +16,13 @@ class Parser():
     tokens = lexer.tokens
     lexer = lex.lex(module=lexer)
 
-    # Defining the precedence
-    precedence = (
-        ('left', 'LOWER', 'LOWER_EQUAL', 'HIGHER', 'HIGHER_EQUAL'),
-        ('left', 'PLUS', 'MINUS'),
-        ('left', 'MULTIPLY', 'DIVIDE'),
-        ('left', 'OPEN_PAREN', 'CLOSE_PAREN')
-    )
+    # # Defining the precedence
+    # precedence = (
+    #     ('left', 'LOWER', 'LOWER_EQUAL', 'HIGHER', 'HIGHER_EQUAL'),
+    #     ('left', 'PLUS', 'MINUS'),
+    #     ('left', 'MULTIPLY', 'DIVIDE'),
+    #     ('left', 'OPEN_PAREN', 'CLOSE_PAREN')
+    # )
 
     # Defining the grammar LCC-2021-2
     def p_PROGRAM(self, p):
@@ -69,7 +70,8 @@ class Parser():
                      | PRINTSTAT SEMICOLON 
                      | READSTAT SEMICOLON 
                      | RETURNSTAT SEMICOLON 
-                     | IFSTAT FORSTAT 
+                     | IFSTAT 
+                     | FORSTAT 
                      | OPEN_CURLY_BRACKET STATELIST CLOSE_CURLY_BRACKET 
                      | BREAK SEMICOLON 
                      | SEMICOLON'''
@@ -189,13 +191,13 @@ class Parser():
         pass
         
     def p_NUMEXPRESSION1(self, p):
-        '''NUMEXPRESSION1 : NUMEXPRESSION2 TERM NUMEXPRESSION1
+        '''NUMEXPRESSION1 : PLUS_MINUS TERM NUMEXPRESSION1
                           | EMPTY'''
         pass
     
-    def p_NUMEXPRESSION2(self, p):
-        '''NUMEXPRESSION2 : PLUS 
-                          | MINUS'''
+    def p_PLUS_MINUS(self, p):
+        '''PLUS_MINUS : PLUS 
+                      | MINUS'''
         pass
 
     def p_TERM(self, p):
@@ -214,7 +216,7 @@ class Parser():
         pass
 
     def p_UNARYEXPR(self, p):
-        '''UNARYEXPR : NUMEXPRESSION2 FACTOR
+        '''UNARYEXPR : PLUS_MINUS FACTOR
                      | FACTOR'''
         pass
 
@@ -268,10 +270,10 @@ class Parser():
             print("Code is correct, no parsing errors")
     
 if __name__ == '__main__':
-    # arg_parser = argparse.ArgumentParser(description='Running Lexer')
-    # arg_parser.add_argument("--code_path", help="This is the path for the lcc archive")
-    # args = arg_parser.parse_args()
+    arg_parser = argparse.ArgumentParser(description='Running Lexer')
+    arg_parser.add_argument("--code_path", help="This is the path for the lcc archive")
+    args = arg_parser.parse_args()
 
     parser = Parser()
-    parser.test(code_path='./code_example.lcc')
-    # parser.test(code_path=args.code_path)
+    # parser.test(code_path='./test_codes/funcoes_matematicas.lcc')
+    parser.test(code_path=args.code_path)
