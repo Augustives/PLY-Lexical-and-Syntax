@@ -1,4 +1,5 @@
-from distutils.log import debug
+import os
+from tkinter import E
 import ply.lex as lex
 import ply.yacc as yacc
 
@@ -236,13 +237,20 @@ class Parser():
 
     def p_error(self, p):
         self.error = True
-        self.parser.errok()
+        for state in self.parser.statestack[::-1]:
+            try:
+                left_non_terminal = list(self.parser.goto[state].keys())[0]
+                break
+            except Exception:
+                continue
+
         print(
             f'Entry Token: {p.type}\n'
-            # f'Left Non Terminal: {}\n'
-            # f'Sentencial Form: {}\n'
+            f'Left Non Terminal: {left_non_terminal}\n'
+            f'Sentencial Form: {" ".join([symbol.type for symbol in self.parser.symstack][1:])}\n'
             '--------------------------------------------------------------------------------'
         )
+        os._exit(1)
 
     def test(self, code_path, **kwargs):
         self.parser = yacc.yacc(module=self, **kwargs)
@@ -250,7 +258,10 @@ class Parser():
         # Reading code file and passing as input to lexer
         f = open(code_path, 'r')
         self.code_example = f.read()
-        self.parser.parse(input=self.code_example, lexer=self.lexer)
+        try:
+            self.parser.parse(input=self.code_example, lexer=self.lexer)
+        except:
+            return
         f.close()
 
         if not self.error:
