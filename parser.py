@@ -6,6 +6,9 @@ from lexer import Lexer
 
 
 class Parser():
+    def __init__(self):
+        self.error = False
+
     # Creating lexer and importing tokens
     lexer = Lexer()
     tokens = lexer.tokens
@@ -13,15 +16,13 @@ class Parser():
 
     # Defining the precedence
     precedence = (
-        # ('right', 'IDENT', 'IF'), 
-        # ('right', 'ASSIGN'),
         ('left', 'LOWER', 'LOWER_EQUAL', 'HIGHER', 'HIGHER_EQUAL'),
         ('left', 'PLUS', 'MINUS'),
         ('left', 'MULTIPLY', 'DIVIDE'),
         ('left', 'OPEN_PAREN', 'CLOSE_PAREN')
     )
 
-    # Defining the grammar
+    # Defining the grammar LCC-2021-2
     def p_PROGRAM(self, p):
         '''PROGRAM : STATEMENT 
                    | FUNCLIST
@@ -48,11 +49,16 @@ class Parser():
         pass
 
     def p_PARAMLIST(self, p):
-        '''PARAMLIST : INT_FLOAT_STRING IDENT PARAMLIST1'''
+        '''PARAMLIST : PARAMLIST1
+                     | EMPTY'''
         pass
 
     def p_PARAMLIST1(self, p):
-        '''PARAMLIST1 : COMMA PARAMLIST
+        '''PARAMLIST1 : INT_FLOAT_STRING IDENT PARAMLIST2'''
+        pass
+
+    def p_PARAMLIST2(self, p):
+        '''PARAMLIST2 : COMMA PARAMLIST
                       | EMPTY'''
         pass
 
@@ -94,12 +100,16 @@ class Parser():
                                | STRING_CONSTANT TERM1 NUMEXPRESSION1 EXPRESSION1
                                | NULL TERM1 NUMEXPRESSION1 EXPRESSION1
                                | OPEN_PAREN NUMEXPRESSION CLOSE_PAREN TERM1 NUMEXPRESSION1 EXPRESSION1
-                               | IDENT EXPRESSION_FUNCCALL1'''
+                               | FUNCCALL'''
         pass
 
-    def p_EXPRESSION_FUNCCALL1(self, p):
-        '''EXPRESSION_FUNCCALL1 : ALLOCEXPRESSION1 TERM1 NUMEXPRESSION1 EXPRESSION1
-                                | OPEN_PAREN PARAMLISTCALL CLOSE_PAREN'''
+    def p_FUNCCALL(self, p):
+        '''FUNCCALL : IDENT FUNCCALL1'''
+        pass
+
+    def p_FUNCCALL1(self, p):
+        '''FUNCCALL1 : ALLOCEXPRESSION1 TERM1 NUMEXPRESSION1 EXPRESSION1
+                     | OPEN_PAREN PARAMLISTCALL CLOSE_PAREN'''
         pass
 
     def p_PARAMLISTCALL(self, p):
@@ -225,18 +235,32 @@ class Parser():
         pass
 
     def p_error(self, p):
-        print(f"Syntax error at token {p.type} at line {p.lineno}" )
+        self.error = True
+        self.parser.errok()
+        print(
+            f'Entry Token: {p.type}\n'
+            # f'Left Non Terminal: {}\n'
+            # f'Sentencial Form: {}\n'
+            '--------------------------------------------------------------------------------'
+        )
 
     def test(self, code_path, **kwargs):
-        parser = yacc.yacc(module=self, **kwargs, debug=True)
+        self.parser = yacc.yacc(module=self, **kwargs)
 
         # Reading code file and passing as input to lexer
         f = open(code_path, 'r')
         self.code_example = f.read()
-        parser.parse(input=self.code_example, lexer=self.lexer)
+        self.parser.parse(input=self.code_example, lexer=self.lexer)
         f.close()
+
+        if not self.error:
+            print("Code is correct, no parsing errors")
     
 if __name__ == '__main__':
+    # arg_parser = argparse.ArgumentParser(description='Running Lexer')
+    # arg_parser.add_argument("--code_path", help="This is the path for the lcc archive")
+    # args = arg_parser.parse_args()
+
     parser = Parser()
     parser.test(code_path='./code_example.lcc')
-# yacc.yacc(debug=True)
+    # parser.test(code_path=args.code_path)

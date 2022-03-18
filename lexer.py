@@ -37,7 +37,6 @@ class Lexer:
         'CLOSE_SQUARE_BRACKET',
         'OPEN_CURLY_BRACKET',
         'CLOSE_CURLY_BRACKET',
-        # 'DOT',
         'COMMA',
         'SEMICOLON',
         'EQUAL',
@@ -58,14 +57,13 @@ class Lexer:
         'STRING_CONSTANT'
     ]
 
-    # Definig our grammar based on our tokens with the use of regular expressions
+    # Definig our regular expressions based on our tokens
     t_OPEN_PAREN = r'\('
     t_CLOSE_PAREN = r'\)'
     t_OPEN_SQUARE_BRACKET = r'\['
     t_CLOSE_SQUARE_BRACKET = r'\]'
     t_OPEN_CURLY_BRACKET = r'\{'
     t_CLOSE_CURLY_BRACKET = r'\}'
-    # t_DOT = r'\.'
     t_COMMA = r','
     t_SEMICOLON = r';'
     t_ASSIGN = r'\='
@@ -96,10 +94,10 @@ class Lexer:
         t.type = 'STRING_CONSTANT'
         return t
 
-    # Here we check for the Resered Words and also the IDENT
+    # Here we check for the Reserved Words and also the IDENT
     def t_IDENT(self, t):
         r'[a-zA-Z_][a-zA-Z_0-9]*'
-        if t.value.upper() in self.reserved_words:
+        if (t.value.upper() in self.reserved_words and t.value == t.value.lower()):
             t.value = t.value.upper()
             t.type = t.value
         else:
@@ -156,9 +154,9 @@ class Lexer:
 
 
 if __name__ == '__main__':
-    # parser = argparse.ArgumentParser(description='Running Lexer')
-    # parser.add_argument("--code_path", help="This is the path for the lcc archive")
-    # args = parser.parse_args()
+    # arg_parser = argparse.ArgumentParser(description='Running Lexer')
+    # arg_parser.add_argument("--code_path", help="This is the path for the lcc archive")
+    # args = arg_parser.parse_args()
 
     lexer = Lexer()
     lexer.test(code_path='./code_example.lcc')
