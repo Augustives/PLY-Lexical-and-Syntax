@@ -1,6 +1,5 @@
 # PLY - Lexical and Syntax
 # INE5622 - Introdução a Compiladores
-## Analisador Léxico
 Implementação do Analisador Léxico e Sintático
 
 ## Rodar lexer
