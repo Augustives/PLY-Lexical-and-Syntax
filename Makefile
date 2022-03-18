@@ -1,4 +1,4 @@
-PYTHON:=
+PYTHON :=
 	ifeq ($(OS),Windows_NT)
 		PYTHON = python
 	else
