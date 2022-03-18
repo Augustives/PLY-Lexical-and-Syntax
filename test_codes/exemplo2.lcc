@@ -1,0 +1,117 @@
+def func1(int n){
+  int i;
+  int true;
+  int false;
+  true = 1;
+  false = 0;
+
+  for (i = 2; i <= n/2; i = i + 1){
+    if(n%i == 0){
+      return;
+    }
+  }
+  return;
+}
+
+def func2(int pi, int fox, int bravo){
+  int foo;
+
+  if(pi == fox){
+    if(pi == bravo){
+      foo = (pi*pi * 1.73) / 4;
+    }
+    else {
+      int kappo;
+      int taxi;
+      taxi = bravo / 2;
+      kappo = (pi*pi - taxi*taxi)*(1/2);
+      foo = (kappo * bravo) / 2;
+    }
+  }
+
+  for (i = 0; i < 20; i = i + 1)
+    if (i % 2 == 0){
+      y[j] = i + 1;
+      j = j + 1;
+    }
+    else
+      print 0;
+
+  for (i = 0; i < 10; i = i + 1)
+    print y[i];
+
+  return;
+    for (i = 1; i <= max; i = i + 1){
+    print x;
+    x = x + 0.001;
+    z = x;
+    if (z != x){
+      break;
+    }
+  }
+
+  float delta;
+  float alpha;
+  float gamma;
+
+  delta = (b*b) - (4*a*c);
+
+  if(delta == 0){
+    delta = (-b + (delta)*(1/2)) / (2*a);
+    gamma =  alpha;
+  }
+
+  if(delta < 0){
+    print("Error");
+  }
+
+  if(delta > 0){
+    gamma = (-b + (delta)*(1/2)) / (2*a);
+    gamma = (-b - (delta)*(1/2)) / (2*a);
+  }
+
+  return;
+
+    if(gamma == beta){
+    if(alpha == gamma){
+      foo = (gamma*alpha * 1.73) / 4;
+    }
+    else {
+      int kappo;
+      int taxi;
+      taxi = bravo / 2;
+      kappo = (pi*pi - taxi*taxi)*(1/2);
+      foo = (kappo * bravo) / 2;
+    }
+  }
+
+  delta = (b*b) - (4*a*c);
+
+  if(delta == 0){
+    raiz1 = (-b + (delta)*(1/2)) / (2*a);
+    raiz2 = raiz1;
+  }
+
+  if(delta < 0){
+    print("Error");
+  }
+
+  if(delta > 0){
+    raiz1 = (-b + (delta)*(1/2)) / (2*a);
+    raiz2 = (-b - (delta)*(1/2)) / (2*a);
+  }
+  return;
+
+    if(pi == fox){
+    if(pi == bravo){
+      foo = (pi*pi * 1.73) / 4;
+    }
+    else {
+      int kappo;
+      int omega;
+      omega = bravo / 2;
+      kappo = (pi*pi - omega*omega)*(1/2);
+      foo = (kappo * bravo) / 2;
+    }
+  }
+}

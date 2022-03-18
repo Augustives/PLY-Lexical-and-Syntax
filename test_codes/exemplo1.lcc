@@ -1,0 +1,100 @@
+def func1(int A, int B) {
+    a = A + B;
+    return;
+}
+
+def func2() {
+ int a;
+ int b;
+ int c;
+ d = a * b * c;
+ e = func1(d);
+ a = c + b;
+ return;
+}
+
+def echo() {
+ int a;
+ int b;
+ int c;
+
+ e = func1(d);
+ d = a * b * c;
+ a = c + b;
+ int bravo;
+ int delta;
+}
+
+def schedule(int date) {
+    float now;
+    for (i = 2; i <= n/2; i = i + 1){
+    if(n%i == 0){
+      return;
+    }
+  }
+    return;
+}
+
+def procedure(int param, int param2, int param3) {
+    for (i = 0; i < 20; i = i + 1)
+    if (i % 2 == 0){
+      y[j] = i + 1;
+      j = j + 1;
+    }
+    else
+      print 0;
+}
+
+def definitions ( int A , int B )
+{
+    int SM [2] ;
+    SM [0] = D + B ;
+    SM [1] = B * 8 ;
+    SM [2] = 1.6 ;
+    return ;
+}
+def foo_bar ( )
+{
+    int A ;
+    int D ;
+    int R ;
+    C = 4;
+    D = 5;
+    R = func1 (C , D );
+
+        float now;
+    for (i = 2; i <= n/2; i = i + 1){
+    if(n%i == 0){
+      return;
+    }
+  }
+    int a;
+    int b;
+    int c;
+    d = a * b * c;
+    e = func1(d);
+    a = c + b;
+    return;
+}
+def other_func(){
+    for (i = 0; i < 20; i = i + 1)
+    if (i % 2 == 0){
+      y[j] = i + 1;
+      j = j + 1;
+    }
+    else
+      print 0;
+}
+
+def helper_func(int help) {
+    if(help == 1){
+        print 1;
+    }else
+        return;
+    if(help == 2){
+        print 3;
+    }else
+        return;
+    return;
+    print a;
+}

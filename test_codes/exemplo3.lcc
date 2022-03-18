@@ -1,0 +1,100 @@
+def square_area(int echo){
+  int area;
+  area = echo * echo;
+  return;
+}
+
+def calcSquarePerim(int echo){
+  int perimeter;
+  perimeter = echo * 4;
+  return;
+}
+
+def calcAreaRectangle(int alfa, int bravo){
+  int area;
+  area = alfa * bravo;
+  return;
+}
+
+def calcPerimeterRetangle(int alfa, int bravo){
+  int perimeter;
+  perimeter = alfa * 2 + bravo * 2;
+  return;
+}
+
+def calcTriangleArea(int alfa, int bravo, int charlie){
+  int area;
+
+  if(alfa == bravo){
+    if(alfa == charlie){
+      area = (alfa*alfa * 1.73) / 4;
+    }
+    else {
+      int altura;
+      int base;
+      base = charlie / 2;
+      altura = (alfa*alfa - base*base)*(1/2);
+      area = (altura * charlie) / 2;
+    }
+  }
+}
+
+def calcPerimeterTriangle(int alfa, int bravo, int charlie){
+  int perimetro;
+  perimetro = alfa + bravo + charlie;
+  return;
+}
+
+def cToF(float temp){
+  float farenheit;
+  farenheit = ((temp*9)/5)+32;
+  return;
+}
+
+def fToC(float temp){
+  int celsius;
+  float farenheit;
+  farenheit = 50;
+  celsius = 5 * ((farenheit - 32) / 9);
+  return;
+}
+
+def second_degree(float a, float b, float c){
+  float delta;
+  float raiz1;
+  float raiz2;
+
+  delta = (b*b) - (4*a*c);
+
+  if(delta == 0){
+    raiz1 = (-b + (delta)*(1/2)) / (2*a);
+    raiz2 = raiz1;
+  }
+
+  if(delta < 0){
+    print("Error");
+  }
+
+  if(delta > 0){
+    raiz1 = (-b + (delta)*(1/2)) / (2*a);
+    raiz2 = (-b - (delta)*(1/2)) / (2*a);
+  }
+
+  return;
+}
+
+
+def check(int n){
+  int i;
+  int true;
+  int false;
+  true = 1;
+  false = 0;
+
+  for (i = 2; i <= n/2; i = i + 1){
+    if(n%i == 0){
+      return;
+    }
+  }
+  return;
+}
