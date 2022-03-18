@@ -16,13 +16,12 @@ class Parser():
     tokens = lexer.tokens
     lexer = lex.lex(module=lexer)
 
-    # # Defining the precedence
-    # precedence = (
-    #     ('left', 'LOWER', 'LOWER_EQUAL', 'HIGHER', 'HIGHER_EQUAL'),
-    #     ('left', 'PLUS', 'MINUS'),
-    #     ('left', 'MULTIPLY', 'DIVIDE'),
-    #     ('left', 'OPEN_PAREN', 'CLOSE_PAREN')
-    # )
+    # Defining the precedence
+    precedence = (
+        ('left', 'LOWER', 'LOWER_EQUAL', 'HIGHER', 'HIGHER_EQUAL'),
+        ('left', 'PLUS', 'MINUS'),
+        ('left', 'MULTIPLY', 'DIVIDE'),
+    )
 
     # Defining the grammar LCC-2021-2
     def p_PROGRAM(self, p):
