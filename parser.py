@@ -1,3 +1,8 @@
+# GRUPO:
+# Arthur Pereira Exterkoetter
+# Augusto Silva de Oliveira
+# Gustavo Egert Ortiz
+
 import argparse
 import os
 
